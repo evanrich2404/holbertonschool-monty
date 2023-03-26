@@ -66,24 +66,27 @@ extern struct global_s global;
 /*
  * Functions
  */
+/* resolver.c */
 void op_resolver(stack_t **stack);
+/* pmonty.c */
 void push_monty(stack_t **stack, unsigned int line_number);
 void pall_monty(stack_t **stack, unsigned int line_number);
 void pint_monty(stack_t **stack, unsigned int line_number);
 void pop_monty(stack_t **stack, unsigned int line_number);
+void nop_monty(stack_t **stack, unsigned int line_number);
+/* mathmonty.c */
 void swap_monty(stack_t **stack, unsigned int line_number);
 void add_monty(stack_t **stack, unsigned int line_number);
-void nop_monty(stack_t **stack, unsigned int line_number);
 void sub_monty(stack_t **stack, unsigned int line_number);
 void div_monty(stack_t **stack, unsigned int line_number);
 void mul_monty(stack_t **stack, unsigned int line_number);
+/* modsmonty.c */
 void mod_monty(stack_t **stack, unsigned int line_number);
 void pchar_monty(stack_t **stack, unsigned int line_number);
 void pstr_monty(stack_t **stack, unsigned int line_number);
 void rotl_monty(stack_t **stack, unsigned int line_number);
 void rotr_monty(stack_t **stack, unsigned int line_number);
-void stack_monty(stack_t **stack, unsigned int line_number);
-void queue_monty(stack_t **stack, unsigned int line_number);
+/* freestack.c */
 void free_stack(stack_t **stack, char *message);
 
 #endif /* MONTY_H_ */
