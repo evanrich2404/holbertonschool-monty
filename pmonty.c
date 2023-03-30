@@ -1,107 +1,92 @@
 #include "monty.h"
 
 /**
- * push_monty - pushes an element to the stack
- * @stack: double pointer to the stack
- * @line_number: line number of the opcode
- * Return: void
+ * push - Push Item to head
+ *@stack: Current Stack
+ *@line_num: Current Line
  */
-void push_monty(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, __attribute__ ((unused)) unsigned int line_num)
 {
-	stack_t *new_node;
-	unsigned int i = 1;
-	int n;
-	char *errM1 = ": usage: push integer\n";
-
-	if (!(global.op_arg))
-		free_stack(stack, errM1);
-	if (!((global.op_arg[0] >= '0' && global.op_arg[0] <= '9')
-	|| global.op_arg[0] == '-'))
-		free_stack(stack, errM1);
-	while (global.op_arg[i])
-	{
-		if (isdigit(global.op_arg[i]) == 0)
-			free_stack(stack, errM1);
-		i++;
-	}
-	new_node = malloc(sizeof(stack_t));
-	n = atoi(global.op_arg);
-	new_node->n = n;
-	new_node->prev = NULL;
-	new_node->next = *stack;
-	if (*stack != NULL)
-		(*stack)->prev = new_node;
-	*stack = new_node;
-	(void) line_number;
+	if (stack == NULL)
+		return; /* FAIL */
+	if (CURRENT_COMMAND == NULL)
+		return; /* FAIL */
+	addNodeToStack(stack, CURRENT_COMMAND->parm_num);
 }
 
 /**
- * pall_monty - prints all the values on the stack, starting from the top
- * @stack: double pointer to the stack
- * @line_number: line number of the opcode
- * Return: void
+ * pall - print the stack
+ * @stack: Current Stack
+ * @line_num: Current Line
  */
-void pall_monty(stack_t **stack, unsigned int line_number)
+void pall(stack_t **stack, __attribute__ ((unused)) unsigned int line_num)
 {
-	stack_t *tmp = *stack;
-
-	(void) line_number;
-	while (tmp)
-	{
-		printf("%d\n", tmp->n);
-		tmp = tmp->next;
-	}
+	if (stack == NULL)
+		return; /* FAIL */
+	if (CURRENT_COMMAND == NULL)
+		return; /* FAIL */
+	printStack(*stack);
 }
 
 /**
- * pint_monty - print the value at the top of the stack, followed by a new line
- * @stack: double pointer to the stack
- * @line_number: line number of the opcode
- * Return: void
+ *pint - print top int
+ * @stack: Current Stack
+ * @line_num: Current Line
  */
-void pint_monty(stack_t **stack, unsigned int line_number)
+void pint(stack_t **stack, unsigned int line_num)
 {
-	char *errM1 = ": can't pint, stack empty\n";
-
-	if (*stack == NULL)
-		free_stack(stack, errM1);
-	else
+	if (stack == NULL)
+		return;
+	if (CURRENT_COMMAND == NULL)
+		return;
+	if (!*stack)
 	{
-		printf("%d\n", (*stack)->n);
+		dprintf(STDERR_FILENO, "L%i: can't pint, stack empty\n",
+			line_num);
+		exit(EXIT_FAILURE);
 	}
-	(void) line_number;
+	dprintf(STDOUT_FILENO, "%i\n", (*stack)->n);
 }
 
 /**
- * pop_monty - removes the top element of the stack
- * @stack: double pointer to the stack
- * @line_number: line number of the opcode
- * Return: void
+ *pop - pop top of the stack
+ * @stack: Current Stack
+ * @line_num: Current Line
  */
-void pop_monty(stack_t **stack, unsigned int line_number)
+void pop(stack_t **stack, unsigned int line_num)
 {
-	stack_t *tmp;
-	char *errM1 = ": can't pop an empty stack\n";
-
-	if (!(*stack))
-		free_stack(stack, errM1);
-	else
+	if (stack == NULL)
+		return;
+	if (!*stack)
 	{
-		tmp = (*stack)->next;
-		free(*stack);
-		*stack = tmp;
+		dprintf(STDERR_FILENO, "L%i: can't pop an empty stack\n",
+			line_num);
+		exit(EXIT_FAILURE);
 	}
-	(void) line_number;
+	popHead(stack);
 }
 
 /**
- * nop_monty - doesn’t do anything
- * @stack: double pointer to the stack
- * @line_number: line number of the opcode
- * Return: void
+ *swap - swap top 2 stack values
+ *@stack: Current Stack
+ *@line_num: Line Number
  */
-void nop_monty(stack_t **stack, unsigned int line_number)
+void swap(stack_t **stack, unsigned int line_num)
 {
-	(void) stack;
-	(void) line_number;
+	int temp;
+
+	if (stack == NULL)
+		return;
+	if (!*stack || !(*stack)->next)
+	{
+		dprintf(STDERR_FILENO, "L%i: can't swap, stack too short\n",
+			line_num);
+		freeStack(*stack);
+		free(CURRENT_COMMAND->opcode);
+		free(CURRENT_COMMAND);
+		exit(EXIT_FAILURE);
+	}
+	temp = (*stack)->n;
+	(*stack)->n = (*stack)->next->n;
+	(*stack)->next->n = temp;
 }

@@ -1,44 +1,43 @@
 #include "monty.h"
 
-struct global_s global;
+command_t *CURRENT_COMMAND;
 
 /**
- * main - main function
- * @argc: number of arguments
- * @argv: array of arguments
- * Return: 0, unless failure then 1
+ *main - Program Entry Point
+ *@argC: Count of arguments
+ *@argV: Values fo arguments
+ *
+ *Return: EXIT_SUCCESS
  */
-int main(int argc, char *argv[])
+int main(int argC, char **argV)
 {
-	stack_t *stack_monty = NULL;
-	FILE *inbound_file = NULL;
-	size_t n = 0;
-	char *line_buffer = NULL;
-	const char delims[] = " \t\n";
+	FILE *target;
+	stack_t *MontyStack = NULL;
+	char line[1024];
+	int lineNum;
+	command_t *myOp;
 
-	if (argc != 2)
+	if (argC != 2)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
+		dprintf(STDERR_FILENO, "USAGE: %s file\n", "monty");
+		return (EXIT_FAILURE);
 	}
-	inbound_file = fopen(argv[1], "r");
-	if (!(inbound_file))
+	target = fopen(argV[1], "r");
+	if (!target)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", argV[1]);
+		return (EXIT_FAILURE);
 	}
-	global.file_ref = inbound_file;
-	global.op_line = 0;
-	while (getline(&line_buffer, &n, inbound_file) != -1)
+
+	for (lineNum = 1; fgets(line, 1024, target); lineNum++)
 	{
-		global.op_line++;
-		global.op_code = strtok(line_buffer, delims);
-		global.op_arg = strtok(NULL, delims);
-		if (!global.op_code || global.op_code[0] == '#')
-			continue;
-		global.op_arg = strtok(NULL, delims);
-		op_resolver(&stack_monty);
+		myOp = parse_line(line, lineNum);
+
+		do_op(&MontyStack, myOp);
 	}
-	free_stack(&stack_monty, NULL);
-	return (0);
+	fclose(target);
+	freeStack(MontyStack);
+	free(CURRENT_COMMAND->opcode);
+	free(CURRENT_COMMAND);
+	return (EXIT_SUCCESS);
 }
