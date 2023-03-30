@@ -9,9 +9,9 @@ void push(stack_t **stack, __attribute__ ((unused)) unsigned int line_num)
 {
 	if (stack == NULL)
 		return; /* FAIL */
-	if (CURRENT_COMMAND == NULL)
+	if (act_com == NULL)
 		return; /* FAIL */
-	addNodeToStack(stack, CURRENT_COMMAND->parm_num);
+	addNode(stack, act_com->parm_num);
 }
 
 /**
@@ -23,7 +23,7 @@ void pall(stack_t **stack, __attribute__ ((unused)) unsigned int line_num)
 {
 	if (stack == NULL)
 		return; /* FAIL */
-	if (CURRENT_COMMAND == NULL)
+	if (act_com == NULL)
 		return; /* FAIL */
 	printStack(*stack);
 }
@@ -37,7 +37,7 @@ void pint(stack_t **stack, unsigned int line_num)
 {
 	if (stack == NULL)
 		return;
-	if (CURRENT_COMMAND == NULL)
+	if (act_com == NULL)
 		return;
 	if (!*stack)
 	{
@@ -82,8 +82,8 @@ void swap(stack_t **stack, unsigned int line_num)
 		dprintf(STDERR_FILENO, "L%i: can't swap, stack too short\n",
 			line_num);
 		freeStack(*stack);
-		free(CURRENT_COMMAND->opcode);
-		free(CURRENT_COMMAND);
+		free(act_com->opcode);
+		free(act_com);
 		exit(EXIT_FAILURE);
 	}
 	temp = (*stack)->n;

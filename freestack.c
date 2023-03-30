@@ -2,13 +2,13 @@
 
 
 /**
- *addNodeToStack - Add a node to head of stack
+ *addNode - Add a node to head of stack
  *@stack: stack to add node to
  *@value: Value of the node
  *
  * Return: new node or NULL;
  */
-stack_t *addNodeToStack(stack_t **stack, const int value)
+stack_t *addNode(stack_t **stack, const int value)
 {
 	stack_t *newNode;
 

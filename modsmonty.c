@@ -76,12 +76,12 @@ void do_op(stack_t **stack, command_t *command)
 		return;
 	if (command == NULL)
 		return;
-	if (CURRENT_COMMAND)
+	if (act_com)
 	{
-		free(CURRENT_COMMAND->opcode);
-		free(CURRENT_COMMAND);
+		free(act_com->opcode);
+		free(act_com);
 	}
-	CURRENT_COMMAND = command;
+	act_com = command;
 	for (i = 0; ops[i].opcode && strcmp(ops[i].opcode, command->opcode); i++)
 		;
 	if (ops[i].opcode == NULL)

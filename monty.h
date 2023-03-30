@@ -57,7 +57,7 @@ typedef struct command_s
 command_t *parse_line(char *line_txt, int line_num);
 void do_op(stack_t **stack, command_t *command);
 /* Life of Brian*/
-extern command_t *CURRENT_COMMAND;
+extern command_t *act_com;
 void push(stack_t **stack, unsigned int line_num);
 void pall(stack_t **stack, unsigned int line_num);
 void pint(stack_t **stack, unsigned int line_num);
@@ -66,7 +66,7 @@ void swap(stack_t **stack, unsigned int line_num);
 void add(stack_t **stack, unsigned int line_num);
 
 /* Stack Functions */
-stack_t *addNodeToStack(stack_t **stack, const int value);
+stack_t *addNode(stack_t **stack, const int value);
 int popHead(stack_t **stack);
 int popTail(stack_t **stack);
 int printStack(stack_t *stack);

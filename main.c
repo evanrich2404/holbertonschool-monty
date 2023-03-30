@@ -1,6 +1,6 @@
 #include "monty.h"
 
-command_t *CURRENT_COMMAND;
+command_t *act_com;
 
 /**
  *main - Program Entry Point
@@ -37,7 +37,7 @@ int main(int argC, char **argV)
 	}
 	fclose(target);
 	freeStack(MontyStack);
-	free(CURRENT_COMMAND->opcode);
-	free(CURRENT_COMMAND);
+	free(act_com->opcode);
+	free(act_com);
 	return (EXIT_SUCCESS);
 }
