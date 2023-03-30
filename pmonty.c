@@ -54,7 +54,7 @@ void pall_monty(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * pint_monty - prints the value at the top of the stack, followed by a new line
+ * pint_monty - print the value at the top of the stack, followed by a new line
  * @stack: double pointer to the stack
  * @line_number: line number of the opcode
  * Return: void
@@ -62,6 +62,7 @@ void pall_monty(stack_t **stack, unsigned int line_number)
 void pint_monty(stack_t **stack, unsigned int line_number)
 {
 	char *errM1 = ": can't pint, stack empty\n";
+
 	if (*stack == NULL)
 		free_stack(stack, errM1);
 	else

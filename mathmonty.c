@@ -11,14 +11,16 @@ void swap_monty(stack_t **stack, unsigned int line_number)
 	stack_t *tmp;
 	char *errM1 = ": can't swap, stack too short\n";
 
-	if (!(*stack) || (!(*stack)->next))
+	if (!(*stack))
+		free_stack(stack, errM1);
+	if (!(*stack)->next)
 		free_stack(stack, errM1);
 	tmp = (*stack)->next;
 	(*stack)->next = tmp->next;
 	(*stack)->prev = tmp;
-	tmp->next = *stack;
+	tmp->next = (*stack);
 	tmp->prev = NULL;
-	*stack = tmp;
+	(*stack) = tmp;
 	(void) line_number;
 }
 
@@ -33,7 +35,9 @@ void add_monty(stack_t **stack, unsigned int line_number)
 	stack_t *tmp;
 	char *errM1 = ": can't add, stack too short\n";
 
-	if (!(*stack) || (!(*stack)->next))
+	if (!(*stack))
+		free_stack(stack, errM1);
+	if (!(*stack)->next)
 		free_stack(stack, errM1);
 	tmp = (*stack);
 	tmp->next->n = (((*stack)->n) + ((*stack)->next->n));
@@ -53,7 +57,9 @@ void sub_monty(stack_t **stack, unsigned int line_number)
 	stack_t *tmp;
 	char *errM1 = ": can't sub, stack too short\n";
 
-	if (!(*stack) || (!(*stack)->next))
+	if (!(*stack))
+		free_stack(stack, errM1);
+	if (!(*stack)->next)
 		free_stack(stack, errM1);
 	tmp = (*stack);
 	tmp->next->n -= tmp->n;
@@ -75,7 +81,9 @@ void div_monty(stack_t **stack, unsigned int line_number)
 	char *errM1 = ": can't div, stack too short\n";
 	char *errM2 = ": division by zero\n";
 
-	if (!(*stack) || (!(*stack)->next))
+	if (!(*stack))
+		free_stack(stack, errM1);
+	if (!(*stack)->next)
 		free_stack(stack, errM1);
 	if ((*stack)->n == 0)
 		free_stack(stack, errM2);
@@ -98,7 +106,9 @@ void mul_monty(stack_t **stack, unsigned int line_number)
 	stack_t *tmp;
 	char *errM1 = ": can't mul, stack too short\n";
 
-	if (!(*stack) || (!(*stack)->next))
+	if (!(*stack))
+		free_stack(stack, errM1);
+	if (!(*stack)->next)
 		free_stack(stack, errM1);
 	tmp = (*stack);
 	tmp->next->n *= tmp->n;

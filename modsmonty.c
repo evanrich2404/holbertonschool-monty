@@ -25,7 +25,7 @@ void mod_monty(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * pchar_monty - prints the char at the top of the stack, followed by a new line
+ * pchar_monty - print the char at the top of the stack, followed by a new line
  * @stack: double pointer to the stack
  * @line_number: line number of the opcode
  * Return: void
